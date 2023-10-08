@@ -1,0 +1,26 @@
+// ARM Template
+{
+  "filter": {
+    "subjectBeginsWith": "/blobServices/default/containers/mycontainer/log",
+    "subjectEndsWith": ".jpg",
+    "includedEventTypes": [
+      "Microsoft.Resources.ResourceWriteFailure",
+      "Microsoft.Resources.ResourceWriteSuccess"
+    ],
+
+    // enableAdvancedFilteringOnArrays: true // Allow array keys
+    "advancedFilters": [
+      // AND operation
+      {
+        "operatorType": "NumberGreaterThanOrEquals",
+        "key": "Data.Key1", // The field in the event data that you're using for filtering (number, boolean, string)
+        "value": 5
+      },
+      {
+        "operatorType": "StringContains",
+        "key": "Subject",
+        "values": ["container1", "container2"] // OR operation
+      }
+    ]
+  }
+}
