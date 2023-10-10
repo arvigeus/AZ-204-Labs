@@ -11,6 +11,8 @@ using Azure.Storage.Sas;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Azure.Cosmos;
+using Microsoft.Azure.Cosmos.Linq;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions;
 using Microsoft.Azure.WebJobs.Extensions.CosmosDB;
@@ -21,6 +23,54 @@ using Microsoft.Azure.WebJobs.Extensions.ServiceBus;
 using Microsoft.Extensions.Logging;
 
 namespace Services;
+
+class CosmosDBService
+{
+    async Task Query()
+    {
+        var client = new CosmosClient("AccountEndpoint=https://<your-account-name>.documents.azure.com:443/;AccountKey=<your-account-key>;Database=<your-database-name>;");
+
+        // var database = await client.CreateDatabaseAsync("db", ThroughputProperties.CreateAutoscaleThroughput(autoscaleMaxThroughput: 700));
+        var database = client.GetDatabase("db");
+
+        Container container = await database.CreateContainerIfNotExistsAsync(id: "<container>", partitionKeyPath: "/Group", throughput: 700); // Note: This returns ContainerResponse object, but we go around it
+        // var container = await database.CreateContainerAsync(new ContainerProperties(id: "container", partitionKeyPath: "/name"));
+        // var container = database.GetContainer("<container>");
+
+        var created = await container.CreateItemAsync(new Item { Name = "1", Group = "MyPartitionValue" }, new PartitionKey("Group")); // No slash
+
+        string queryText = "select * from items s where s.Name = @NameInput ";
+        QueryDefinition query = new QueryDefinition(queryText)
+            .WithParameter("@NameInput", "Account1");
+        FeedIterator<Item> feedIterator = container.GetItemQueryIterator<Item>(
+        query // Note: you can pass queryText directly here
+        // Optional:
+        // requestOptions: new QueryRequestOptions()
+        // {
+        //     PartitionKey = new PartitionKey("Account1"),
+        //     MaxItemCount = 1
+        // }
+        );
+        while (feedIterator.HasMoreResults)
+        {
+            FeedResponse<Item> response = await feedIterator.ReadNextAsync();
+            foreach (var item in response) Console.WriteLine(item.Name);
+        }
+
+        var queryable = container
+            .GetItemLinqQueryable<Item>()
+            .Where(item => item.Age > 25 && item.Group == "MyPartitionValue")
+            .ToFeedIterator();
+        while (queryable.HasMoreResults) { }
+    }
+
+    class Item
+    {
+        public string Name { get; set; } = "";
+        public int Age { get; set; } = 0;
+        public string Group { get; set; } = ""; // Partition key
+    }
+}
 
 class CosmoDBFunctions
 {
