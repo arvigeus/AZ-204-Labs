@@ -1,28 +1,31 @@
 using System.Reflection.Metadata;
-using System.Text;
-using Azure.Core;
-using Azure.Identity;
 using Azure.Messaging.EventGrid;
-using Azure.Storage;
-using Azure.Storage.Blobs;
-using Azure.Storage.Blobs.Models;
-using Azure.Storage.Blobs.Specialized;
-using Azure.Storage.Sas;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.Cosmos;
 using Microsoft.Azure.Cosmos.Linq;
 using Microsoft.Azure.WebJobs;
-using Microsoft.Azure.WebJobs.Extensions;
-using Microsoft.Azure.WebJobs.Extensions.CosmosDB;
 using Microsoft.Azure.WebJobs.Extensions.EventGrid;
-using Microsoft.Azure.WebJobs.Extensions.EventHubs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
-using Microsoft.Azure.WebJobs.Extensions.ServiceBus;
 using Microsoft.Extensions.Logging;
 
 namespace Services;
+
+// Database: consistency
+// Container: partition key
+
+// Throughput:
+// - container - dedicated,
+// - database - shared
+// - serverless - pay as you go
+// - Autoscale - scales to meet a target
+
+// Stored procedures: get context; getResponse() or getCollection(); response.getBody() or container.createDocument();
+
+// Composite index for 2+ order by
+
+// Conflict resolution: auto(last wins), custom
+
+// Change feed: order per partition key
 
 class CosmosDBService
 {

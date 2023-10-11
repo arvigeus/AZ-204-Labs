@@ -1,25 +1,28 @@
 {
   "format": 1,
   "restore": {
-    "/home/arvigeus/Workspace/arvigeus/AZ-204-Labs/Project.csproj": {}
+    "C:\\Users\\nstoynov\\source\\git\\AZ-204-Labs\\Project.csproj": {}
   },
   "projects": {
-    "/home/arvigeus/Workspace/arvigeus/AZ-204-Labs/Project.csproj": {
+    "C:\\Users\\nstoynov\\source\\git\\AZ-204-Labs\\Project.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/arvigeus/Workspace/arvigeus/AZ-204-Labs/Project.csproj",
+        "projectUniqueName": "C:\\Users\\nstoynov\\source\\git\\AZ-204-Labs\\Project.csproj",
         "projectName": "Project",
-        "projectPath": "/home/arvigeus/Workspace/arvigeus/AZ-204-Labs/Project.csproj",
-        "packagesPath": "/home/arvigeus/.nuget/packages/",
-        "outputPath": "/home/arvigeus/Workspace/arvigeus/AZ-204-Labs/obj/",
+        "projectPath": "C:\\Users\\nstoynov\\source\\git\\AZ-204-Labs\\Project.csproj",
+        "packagesPath": "C:\\Users\\nstoynov\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\nstoynov\\source\\git\\AZ-204-Labs\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "/home/arvigeus/.nuget/NuGet/NuGet.Config"
+          "C:\\Users\\nstoynov\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net7.0"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\proj\\pkg\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -143,7 +146,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/lib64/dotnet/sdk/7.0.111/RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.402\\RuntimeIdentifierGraph.json"
         }
       }
     }

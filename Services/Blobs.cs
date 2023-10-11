@@ -7,18 +7,64 @@ using Azure.Storage.Blobs.Models;
 using Azure.Storage.Blobs.Specialized;
 using Azure.Storage.Sas;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
-using Microsoft.Azure.WebJobs.Extensions;
-using Microsoft.Azure.WebJobs.Extensions.CosmosDB;
-using Microsoft.Azure.WebJobs.Extensions.EventGrid;
-using Microsoft.Azure.WebJobs.Extensions.EventHubs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
-using Microsoft.Azure.WebJobs.Extensions.ServiceBus;
 using Microsoft.Extensions.Logging;
 
 namespace Services;
+
+// Cool: 30
+// Archive: 180; offline. Copy or change tier. Min 1 hour for premium. Only for individual blob block.
+
+// Lifecycle:
+// - Blob blocks: all
+// - Version: all
+// - Snapshots: no cool
+// - Append: only delete
+
+// Filters:
+// - prefixMatch: / at the end to match exactly, otherwise it's treated as startsWith
+// - blobIndexMatch: json { name, op, value }
+
+// Vesrion / Snapshots
+// Creation: Manual / Auto if enabled
+// Immut: Always / Only last version
+
+// Replication: requires change feed and versioning
+
+// All HTTP operations are PUT
+
+// restype=container
+// comp=block
+// comp=appendblock
+// comp=page
+// comp=lease
+// comp=metadata
+// comp=list
+
+// Use OAuth access tokens for authentication
+// - Delegation Scope: Use `user_impersonation` to allow applications to perform actions permitted by the user.
+// - Resource ID**: Use `https://storage.azure.com/` to request tokens.
+
+// Anonymous public read access: If allowed at the storage account level; then depends per container/blob
+
+// Properties and meta: x-ms- and x-ms-meta-
+
+// StorageSharedKeyCredential
+// DefaultAzureCredential, ClientSecretCredential
+
+class BlobService
+{
+    async Task CreateSnapshot()
+    {
+        var options = new BlobClientOptions();
+        var blobClient = new BlobClient(new Uri("..."), options);
+        BlobSnapshotInfo snapshotInfo = await blobClient.CreateSnapshotAsync();
+        // If you attempt to delete a blob that has snapshots, the operation will fail unless you explicitly specify that you also want to delete the snapshots
+        await blobClient.DeleteIfExistsAsync(DeleteSnapshotsOption.IncludeSnapshots);
+    }
+}
 
 class BlobFunctions
 {
