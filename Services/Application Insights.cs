@@ -1,3 +1,5 @@
+// Extension of Azure Monitor and provides Application Performance Monitoring (APM)
+
 // Metrics
 // - Log-based metrics: thorough, complete sets of events.
 // - Standard: pre-aggregated, use backend for better accuracy. For real time, sampling/filtering
@@ -17,6 +19,8 @@
 // - Cohorts: Things in common
 // - Impact: Performance effects
 // - Retention: Returning users
+
+// instrumentation key: provide authorized access - send telemetry data from app to Application Insights 
 
 // Monitor an app (Instrumentation)
 // - Auto: Through config, no app code. OpenCensus for tracking metrics across services and technologies

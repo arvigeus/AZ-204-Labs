@@ -1,0 +1,80 @@
+// Reduce telemetry: adjust log levels and enable sampling
+{
+  "version": "2.0",
+  "logging": {
+    "applicationInsights": {
+      "samplingSettings": {
+        "isEnabled": true,
+        "excludedTypes": "Request"
+      },
+      "snapshotConfiguration": {
+        "isEnabled": true
+      }
+    },
+    "logLevel": {
+      "default": "Information",
+      "Function": "Error",
+      "Host.Results": "Critical",
+      "Function.MyFunction.User": "Trace"
+    },
+    "categoryFilter": {
+      "defaultLevel": "Information",
+      "categoryLevels": {
+        "Host": "Error",
+        "Function": "Error",
+        "Host.Aggregator": "Information"
+      }
+    },
+    "console": {
+      "isEnabled": true
+    }
+  },
+  "customHandler": {
+    "description": {
+      "defaultExecutablePath": "CustomHandlerExecutable", // 60 sec; In `local.settings.json`, set `FUNCTIONS_WORKER_RUNTIME` to "custom"
+      "workingDirectory": "./CustomHandlerDir",
+      "arguments": ["arg1", "arg2"]
+    },
+    "enableForwardingHttpRequest": true
+  },
+  "extensionBundle": {
+    "id": "Microsoft.Azure.Functions.ExtensionBundle",
+    "version": "[1.*, 2.0.0)"
+  },
+  "extensions": {
+    "http": {
+      "routePrefix": "api",
+      "maxOutstandingRequests": 200,
+      "maxConcurrentRequests": 100,
+      "dynamicThrottlesEnabled": false,
+      "hsts": {
+        "isEnabled": true,
+        "maxAge": "10",
+        "includeSubDomains": true,
+        "preload": true
+      }
+    },
+    "queues": {
+      "batchSize": 4,
+      "newBatchThreshold": 8,
+      "maxDequeueCount": 5,
+      "visibilityTimeout": "00:00:10"
+    },
+    "blobs": {
+      "centralizedPoisonQueue": true
+    }
+  },
+  "functionTimeout": "00:05:00", // 5 min Consumption, 30 Premium
+  "watchDirectories": ["Shared"],
+  "healthMonitor": {
+    "enabled": true,
+    "healthCheckInterval": "00:00:10",
+    "healthCheckWindow": "00:02:00",
+    "healthCheckThreshold": 6,
+    "counterThreshold": 0.8
+  },
+  "functionWorkerRuntime": "dotnet",
+  "managedDependency": {
+    "enabled": true
+  }
+}

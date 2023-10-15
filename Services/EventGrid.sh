@@ -1,8 +1,12 @@
 # Create resource group
 # Create topic
 # (Optional) Create a supported service
-# Use topic end service resource id
-# Create subscription with topic id as source and service id as endpoint
+# Create subscription with topic id as source and service id as endpoint (az eventgrid event-subscription create)
+#
+# Subscription (az eventgrid event-subscription)
+# Dead lettering: point to storage account
+
+az provider register --namespace Microsoft.EventGrid
 
 # Create a resource group
 az group create --name $resourceGroup --location $myLocation

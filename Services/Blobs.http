@@ -1,0 +1,16 @@
+PUT https://myaccount.blob.core.windows.net/mycontainer/myblob?comp=lease
+Request Headers:
+x-ms-version: 2015-02-21
+x-ms-lease-action: acquire
+x-ms-lease-duration: -1 # In seconds. -1 is infinite
+x-ms-proposed-lease-id: 1f812371-a41d-49e6-b123-f4b542e851c5
+x-ms-date: <date>
+
+# Working with leased blob
+PUT https://myaccount.blob.core.windows.net/mycontainer/myblob?comp=metadata
+Request Headers:
+x-ms-meta-name:string-value
+x-ms-lease-id:[lease_id]
+
+PUT https://myaccount.blob.core.windows.net/mycontainer?comp=metadata?restype=container
+x-ms-meta-name:string-value

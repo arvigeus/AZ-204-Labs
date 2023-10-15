@@ -36,8 +36,12 @@ class StorageQueueService
             // If you don't pass a value for the `maxMessages` parameter, the default is to peek at one message.
             PeekedMessage[] peekedMessages = await queueClient.PeekMessagesAsync();
 
+            // Peek single message (no await)
+            PeekedMessage peekedMessage = queueClient.PeekMessage();
+
             // Change the contents of a message in-place
             // This code saves the work state and grants the client an extra minute to continue their message (default is 30 sec).
+            // Removes the messages
             QueueMessage[] message = await queueClient.ReceiveMessagesAsync();
             // PopReceipt must be provided when performing operations to the message
             // in order to prove that the client has the right to do so when locked

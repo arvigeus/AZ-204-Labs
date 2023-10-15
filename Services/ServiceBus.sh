@@ -1,6 +1,6 @@
 # 1) Create resource group
 # 2) Create namespace
-#  3) Create queue
+# 3) Create queue
 
 az group create --name $resourceGroup --location $location
 

@@ -9,8 +9,6 @@ using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
-using Azure.Identity;
-using Azure;
 
 // EventHubProducerClient: Source of various types of data such as telemetry, diagnostics, logs, etc.
 // EventProcessorClient: 

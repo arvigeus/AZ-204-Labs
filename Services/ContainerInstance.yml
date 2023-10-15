@@ -1,0 +1,61 @@
+apiVersion: "2019-12-01"
+location: eastus
+name: containerName
+properties:
+  # Container groups: https://learn.microsoft.com/en-us/azure/container-instances/container-instances-container-groups
+  # Containers use a single host machine, sharing lifecycle, resources, network (share an external IP, ports. DNS), and storage volumes
+  # For Windows containers, only single-instance deployment are allowed (NOTE: Here we use two!)
+  # The resources allocated for the host are sum of all resources requested (In this case: 2 CPUs and 2.5 GB RAM)
+  containers:
+    - name: helloworld
+      properties:
+        environmentVariables:
+          - name: "PUBLIC_ENV_VAR"
+            value: "my-exposed-value"
+
+          - name: "SECRET_ENV_VAR"
+            secureValue: "my-secret-value"
+        image: mcr.microsoft.com/hello-world
+        ports:
+          - port: 443
+        resources:
+          requests:
+            cpu: 1.0
+            memoryInGB: 1
+        volumeMounts:
+          - mountPath: /mnt/secrets
+            name: secretvolume
+    - name: hellofiles
+      properties:
+        environmentVariables: []
+        image: mcr.microsoft.com/azuredocs/aci-hellofiles
+        ports:
+          - port: 80
+        resources:
+          requests:
+            cpu: 1.0
+            memoryInGB: 1.5
+        volumeMounts:
+          - mountPath: /aci/logs/
+            name: filesharevolume
+  osType: Linux # or Windows (for single containers)
+  restartPolicy: Always
+  ipAddress:
+    type: Public
+    ports:
+      - port: 443
+      - port: 80
+    dnsNameLabel: containerName
+  volumes:
+    - name: filesharevolume
+      azureFile: # No blob storage support
+        sharename: acishare
+        storageAccountName: <Storage account name>
+        storageAccountKey: <Storage account key>
+    - name: secretvolume
+      secret:
+        # NB: The secret values must be Base64-encoded!
+        mysecret1: TXkgZmlyc3Qgc2VjcmV0IEZPTwo= # "My first secret FOO"
+        mysecret2: TXkgc2Vjb25kIHNlY3JldCBCQVIK # "My second secret BAR"
+tags: {}
+type: Microsoft.ContainerInstance/containerGroups

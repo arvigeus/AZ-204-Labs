@@ -15,7 +15,8 @@
 
 // Tiers:
 // - Standard
-// - Enterprise: redis modules
+// - Enterprise: redis modules, hosting replica nodes in different availability zones
+// - Enterprise Flash: nonvolatile memory, hosting replica nodes in different availability zones
 
 // Session State Providers
 // - In Memory: Simple and fast. Not scalable, as it's not distributed.
@@ -28,7 +29,7 @@
 
 // Data persistence
 // - RDB: Creates binary snapshots, stored in Azure Storage. Restores cache from latest snapshot.
-// - AOF: Logs write operations, saved at least once per second in Azure Storage.
+// - AOF: Logs write operations (negatively affects performance/throughput), saved at least once per second in Azure Storage.
 
 // Supports string and byte[] data
 

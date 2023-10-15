@@ -27,6 +27,14 @@ namespace Services;
 
 // Change feed: order per partition key
 
+// Best practices:
+// - Latest SDK
+// - Use single instance of `CosmosClient`
+// - `Direct` mode for ⚡
+// - Retry logic for handling transient errors
+// - Read 🏋🏿: `Stream API` and `FeedIterator`
+// - Write 🏋🏿: Enable bulk support, set `EnableContentResponseOnWrite` to false, exclude unused paths from indexing and keep the size of your documents minimal
+
 class CosmosDBService
 {
     async Task Query()
