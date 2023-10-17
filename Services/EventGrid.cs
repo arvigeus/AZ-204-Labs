@@ -22,9 +22,9 @@ namespace Services;
 
 // Targets:
 // - Webhooks
-// - Azure Service Bus topics and queues (up to 80GB in total)
-// - Azure Storage Queue (up to 64KB per message)
-// - Azure Event Hubs
+// - Azure Service Bus topics and queues (up to 80GB in total, FIFO per session)
+// - Azure Storage Queue (up to 64KB per message, hiding while processing)
+// - Azure Event Hubs (checkpointing, FIFO per partition)
 // - Azure Functions
 
 // Retry policies: Dead-lettering on 4XX response (set/unset with --deadletter-endpoint).

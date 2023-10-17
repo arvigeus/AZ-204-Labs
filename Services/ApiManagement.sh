@@ -1,3 +1,7 @@
+# ## Versions and Revisions
+# - Revisions: non-breaking changes; no need to publish
+# - Versions: breaking changes, requiring publishing and potentially requiring users to update their applications.
+
 az apim create --name MyAPIMInstance --resource-group $resourceGroup --location eastus --publisher-name "My Publisher" --publisher-email publisher@example.com --sku-name Developer
 
 # Add a secret (nv - named value)
@@ -11,6 +15,7 @@ az apim nv create --resource-group $resourceGroup \
 
 # Calling API with Subscription Key
 # Ocp-Apim-Subscription-Key header with subscription-key
+# Add the API to a product in Azure Portal
 curl --header "Ocp-Apim-Subscription-Key: <key string>" https://<apim gateway>.azure-api.net/api/path
 curl https://<apim gateway>.azure-api.net/api/path?subscription-key=<key string>
 

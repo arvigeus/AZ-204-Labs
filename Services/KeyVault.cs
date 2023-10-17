@@ -4,6 +4,13 @@
 // PUT https://<your-key-vault-name>.vault.azure.net/keys/<your-key-name>?api-version=7.2 HTTP/1.1
 // Authorization: Bearer <access_token> # token obtained from Azure Active Directory
 
+// ## Best Practices
+// - Use a separate vault for each application and environment (production, test, staging).
+// - Restrict vault access to authorized applications and users. (`az keyvault set-policy --name <YourKeyVaultName> --object-id <PrincipalObjectId> --secret-permissions get list`)
+// - Regularly backup your vault. (`az keyvault key backup --vault-name <YourKeyVaultName> --name <KeyName> --file <BackupFileName>`)
+// - Enable logging and alerts.
+// - Enable **soft-delete** and **purge protection** to keep secrets for 7-90 days and prevent forced deletion. Charges apply for HSM-keys in the last 30 days of use. Operations are disabled on deleted objects, and no charges apply. (NOTE: _soft-delete_ increased security, but also _increases storage cost_!)
+
 using System.Text;
 using Azure.Identity;
 using Azure.Messaging.EventGrid;

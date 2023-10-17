@@ -6,6 +6,7 @@ using Microsoft.Azure.Cosmos.Linq;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.EventGrid;
 using Microsoft.Azure.WebJobs.Extensions.Http;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
 namespace Services;
@@ -26,6 +27,10 @@ namespace Services;
 // Conflict resolution: auto(last wins), custom
 
 // Change feed: order per partition key
+// - Monitored container: Holds data for change feed. Reflects inserts/updates.
+// - Lease container: State storage, coordinates feed processing across workers. Can be in same/different account as monitored container.
+// - Delegate component: Custom logic for processing changes.
+// - Compute Instance: Hosts processor; can be VM, Kubernetes pod, Azure App Service, or physical machine.
 
 // Best practices:
 // - Latest SDK
@@ -80,6 +85,40 @@ class CosmosDBService
         public string Name { get; set; } = "";
         public int Age { get; set; } = 0;
         public string Group { get; set; } = ""; // Partition key
+    }
+
+    async Task<ChangeFeedProcessor> StartChangeFeedProcessorAsync(CosmosClient cosmosClient)
+    {
+        Container monitoredContainer = cosmosClient.GetContainer("databaseName", "monitoredContainerName");
+        Container leaseContainer = cosmosClient.GetContainer("databaseName", "leaseContainerName");
+
+        ChangeFeedProcessor changeFeedProcessor = monitoredContainer
+            .GetChangeFeedProcessorBuilder<ToDoItem>(processorName: "changeFeedSample", onChangesDelegate: DelagateHandleChangesAsync)
+                .WithInstanceName("consoleHost") // Compute Instance
+                .WithLeaseContainer(leaseContainer)
+                .Build();
+
+        Console.WriteLine("Starting Change Feed Processor...");
+        await changeFeedProcessor.StartAsync();
+        Console.WriteLine("Change Feed Processor started.");
+        return changeFeedProcessor;
+    }
+
+    static async Task DelagateHandleChangesAsync(
+        ChangeFeedProcessorContext context,
+        IReadOnlyCollection<ToDoItem> changes,
+        CancellationToken cancellationToken)
+    {
+        Console.WriteLine($"Started handling changes for lease {context.LeaseToken}...");
+        Console.WriteLine($"Change Feed request consumed {context.Headers.RequestCharge} RU.");
+        // SessionToken if needed to enforce Session consistency on another client instance
+        Console.WriteLine($"SessionToken ${context.Headers.Session}");
+
+        foreach (ToDoItem item in changes)
+        {
+            Console.WriteLine($"Detected operation for item with id {item.id}.");
+            await Task.Delay(10);
+        }
     }
 }
 

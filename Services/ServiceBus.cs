@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
 
 namespace Services;
 
@@ -37,7 +36,9 @@ namespace Services;
 
 // Protocols: HTTPS and HTTPS (see Event Hub)
 
-// Message factories: For high throughput with many senders/receivers, use multiple factories. For imbalance, use one factory per process.
+// Multiple message factories boost throughput; use one if senders/receivers are imbalanced.
+
+// Prefetch count: 20x max processing rate for all receivers; adjust for large receiver count or low-latency.
 
 // ## TTL
 // - Message-level TTL cannot be higher than topic's (queue) TTL. If not set, queue's TTL is used.

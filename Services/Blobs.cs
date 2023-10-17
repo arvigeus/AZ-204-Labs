@@ -27,7 +27,7 @@ namespace Services;
 // - prefixMatch: / at the end to match exactly, otherwise it's treated as startsWith
 // - blobIndexMatch: json { name, op, value }
 
-// Vesrion / Snapshots
+// Version / Snapshots
 // Creation: Manual / Auto if enabled
 // Immut: Always / Only last version
 
@@ -45,7 +45,7 @@ namespace Services;
 
 // Use OAuth access tokens for authentication
 // - Delegation Scope: Use `user_impersonation` to allow applications to perform actions permitted by the user.
-// - Resource ID**: Use `https://storage.azure.com/` to request tokens.
+// - Resource ID: Use `https://storage.azure.com/` to request tokens.
 
 // Anonymous public read access: If allowed at the storage account level; then depends per container/blob
 

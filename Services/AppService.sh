@@ -70,6 +70,9 @@ az webapp log tail --provider http --name $app --resource-group $resourceGroup
 az webapp log tail --filter Error --name $app --resource-group $resourceGroup # filter by word Error
 az webapp log tail --only-show-errors --name $app --resource-group $resourceGroup
 
+# Metrics: measured at App Service plan level, not web app or resource group
+az monitor metrics list --resource $app_service_plan_resource_id --metric "Percentage CPU" --time-grain PT1M --output table
+
 ############################
 
 let "randomIdentifier=$RANDOM*$RANDOM"
