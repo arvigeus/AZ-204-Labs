@@ -51,8 +51,9 @@ namespace Services;
 
 // Properties and meta: x-ms- and x-ms-meta-
 
-// StorageSharedKeyCredential
-// DefaultAzureCredential, ClientSecretCredential
+// StorageSharedKeyCredential (storage account key)
+// DefaultAzureCredential
+// ClientSecretCredential (AD through app registration)
 
 class BlobService
 {

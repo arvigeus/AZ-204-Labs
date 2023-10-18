@@ -50,7 +50,7 @@ az webapp log config --application-logging {azureblobstorage, filesystem, off} -
 # Private Health checks: x-ms-auth-internal-token request header must equals the hashed value of WEBSITE_AUTH_ENCRYPTION_KEY
 
 # Local Cache: “WEBSITE_LOCAL_CACHE_OPTION”: “Always”, “WEBSITE_LOCAL_CACHE_SIZEINMB”: “1500”
-# Serach: local cache app service
+# Search: local cache app service
 
 # Move App Service plan by cloning it. Source plan and destination plan must be in the same resource group, geographical region, same OS type, and supports the currently used features.
 # New-AzResourceGroup -Name DestinationAzureResourceGroup -Location $destinationLocation
