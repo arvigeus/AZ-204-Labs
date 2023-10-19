@@ -41,9 +41,9 @@ class RedisService
     class MyEntity { }
     async Task<MyEntity> CacheAsidePattern(int id)
     {
-        using var Connection = ConnectionMultiplexer.Connect("your-redis-connection-string");
+        using var redis = ConnectionMultiplexer.Connect("your-redis-connection-string");
         var key = $"MyEntity:{id}";
-        var cache = Connection.GetDatabase();
+        var cache = redis.GetDatabase();
         var json = await cache.StringGetAsync(key);
         var value = string.IsNullOrWhiteSpace(json) ? default : JsonConvert.DeserializeObject<MyEntity>(json!);
         if (value == null) // Cache miss

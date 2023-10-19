@@ -48,6 +48,7 @@ properties:
     dnsNameLabel: containerName
   volumes:
     - name: filesharevolume
+      # Can only be mounted to Linux containers running as root!
       azureFile: # No blob storage support
         sharename: acishare
         storageAccountName: <Storage account name>

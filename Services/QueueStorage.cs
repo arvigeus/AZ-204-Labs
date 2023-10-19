@@ -31,6 +31,7 @@ class StorageQueueService
         if (await queueClient.ExistsAsync())
         {
             await queueClient.SendMessageAsync("message");
+            await queueClient.SendMessageAsync(new BinaryData(new { Name = "John", Age = 30 }));
 
             // Peek at the next message
             // If you don't pass a value for the `maxMessages` parameter, the default is to peek at one message.
